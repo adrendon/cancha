@@ -15,6 +15,11 @@
           <img src="acierto.png" alt="" />
           <strong id="hitsText">0/10</strong>
         </div>
+        <div id="missBalls" class="miss-balls" aria-label="Vidas restantes">
+          <img src="balon-marcador.png" alt="Vida 1" />
+          <img src="balon-marcador.png" alt="Vida 2" />
+          <img src="balon-marcador.png" alt="Vida 3" />
+        </div>
       </header>
 
       <div class="field" id="field">
@@ -37,18 +42,19 @@
         <img src="balon-cargando.gif" alt="Cargando" />
       </div>
 
-      <video id="kickVideo" class="kick-video" playsinline muted preload="auto">
+      <video id="kickVideo" class="kick-video" playsinline preload="auto">
         <source id="kickVideoSource" src="gol.webm" type="video/webm" />
       </video>
 
       <button id="kickBtn" class="action action--kick" type="button" aria-label="Patear">
-        <img id="kickBtnImg" src="patear-btn.png" alt="Patear" />
+        <img class="kick-check" src="patearbtn-check.png" alt="" />
+        <img id="kickBtnImg" class="kick-label" src="patear-btn.png" alt="Patear" />
       </button>
     </section>
 
     <section id="resultScene" class="scene scene--result" hidden aria-live="assertive">
       <img id="resultBase" class="result-base" src="gol.png" alt="Resultado" />
-      <video id="resultVideo" class="result-video" playsinline muted preload="auto"></video>
+      <video id="resultVideo" class="result-video" playsinline preload="auto"></video>
       <img id="mask" class="mask" src="mascara.png" alt="" />
       <div id="resultDecor" class="result-decor"></div>
       <p id="resultText" class="result-text"></p>

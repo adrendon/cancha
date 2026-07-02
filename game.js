@@ -11,6 +11,7 @@ const restartBtn = document.getElementById('restartBtn');
 const goalsText = document.getElementById('goalsText');
 const missesText = document.getElementById('missesText');
 const hitsText = document.getElementById('hitsText');
+const missBalls = document.querySelectorAll('#missBalls img');
 const directionFill = document.getElementById('directionFill');
 const powerFill = document.getElementById('powerFill');
 const aim = document.getElementById('aim');
@@ -37,7 +38,11 @@ let rafId;
 let t0 = performance.now();
 
 function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
-function playSound(audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
+function playSound(audio) {
+  audio.pause();
+  audio.currentTime = 0;
+  audio.play().catch(() => {});
+}
 function setLoading(on) { game.classList.toggle('game--busy', on); }
 
 function animateMeters(now = performance.now()) {
@@ -55,6 +60,11 @@ function updateHud() {
   if (goalsText) goalsText.textContent = state.goals;
   if (missesText) missesText.textContent = state.misses;
   hitsText.textContent = `${state.goals}/${WIN_GOALS}`;
+  missBalls.forEach((img, index) => {
+    const failed = index < state.misses;
+    img.src = failed ? 'balon-marcador-fallo.png' : 'balon-marcador.png';
+    img.alt = failed ? `Fallo ${index + 1}` : `Vida ${index + 1}`;
+  });
 }
 
 function keeperChoice(targetX) {
@@ -94,7 +104,7 @@ function shoot() {
   if (state.phase !== 'ready') return;
   state.phase = 'shooting';
   cancelAnimationFrame(rafId);
-  kickBtnImg.src = 'patearbtn-check.png';
+  kickBtn.classList.add('is-kicking');
   hint.textContent = '¡Tiro en curso!';
   playSound(sounds.kick);
   const goal = resolveShot();
@@ -102,7 +112,7 @@ function shoot() {
   keeper.className = `keeper dive-${state.direction < 0.36 ? 'left' : state.direction > 0.64 ? 'right' : 'center'}`;
   setBallTarget();
   showKickVideo(goal);
-  setLoading(true);
+  setTimeout(() => setLoading(true), 180);
   setTimeout(() => finishShot(goal), 1250);
 }
 
@@ -134,6 +144,7 @@ function showResult(goal) {
     : `<img class="sticker" src="comio-pegatina.png" alt="Tapada"><img class="uy" src="uy.png" alt="Uy"><img class="confirm" src="x-uy.png" alt="No fue gol">`;
   resultVideo.innerHTML = `<source src="${goal ? 'gol.webm' : 'tapo.webm'}" type="video/webm">`;
   resultVideo.load();
+  resultVideo.muted = false;
   resultVideo.play().catch(() => {});
 }
 
@@ -154,7 +165,7 @@ function resetRound() {
   keeper.className = 'keeper';
   ball.className = 'ball';
   ball.removeAttribute('style');
-  kickBtnImg.src = 'patear-btn.png';
+  kickBtn.classList.remove('is-kicking');
   hint.textContent = 'Pulsa patear cuando la mira y potencia estén bien colocadas.';
   animateMeters();
 }
@@ -188,5 +199,5 @@ window.addEventListener('load', () => {
   setTimeout(() => game.classList.remove('game--loading'), 700);
   updateHud();
   resetRound();
-  playSound(sounds.start);
+  document.body.addEventListener('pointerdown', () => playSound(sounds.start), { once: true });
 });
