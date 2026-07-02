@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Cancha - Juego de Penales</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="game" class="game game--loading" aria-label="Juego de penales">
+    <section id="playScene" class="scene scene--play" aria-live="polite">
+      <header class="hud" aria-label="Marcador">
+        <img class="hud__frame" src="marcador.png" alt="" />
+        <div class="hud__stats">
+          <span>Goles <strong id="goalsText">0</strong></span>
+          <span>Fallos <strong id="missesText">0</strong>/3</span>
+        </div>
+        <div class="hits" aria-label="Aciertos">
+          <img src="acierto.png" alt="" />
+          <strong id="hitsText">0/10</strong>
+        </div>
+      </header>
+
+      <div class="field" id="field">
+        <div class="goal-area" aria-hidden="true">
+          <img class="goal" src="arco.png" alt="Portería" />
+          <img id="keeper" class="keeper" src="arquero.png" alt="Arquero" />
+          <div id="aim" class="aim"></div>
+        </div>
+
+        <div class="meter-panel" aria-label="Medidor de tiro">
+          <div class="meter"><span id="directionFill"></span></div>
+          <p id="hint" class="hint">Pulsa patear cuando la mira y potencia estén bien colocadas.</p>
+          <div class="power"><span id="powerFill"></span></div>
+        </div>
+
+        <img id="ball" class="ball" src="balon.png" alt="Balón" />
+      </div>
+
+      <div id="loading" class="loading" role="status" aria-label="Cargando">
+        <img src="balon-cargando.gif" alt="Cargando" />
+      </div>
+
+      <video id="kickVideo" class="kick-video" playsinline muted preload="auto">
+        <source id="kickVideoSource" src="gol.webm" type="video/webm" />
+      </video>
+
+      <button id="kickBtn" class="action action--kick" type="button" aria-label="Patear">
+        <img id="kickBtnImg" src="patear-btn.png" alt="Patear" />
+      </button>
+    </section>
+
+    <section id="resultScene" class="scene scene--result" hidden aria-live="assertive">
+      <img id="resultBase" class="result-base" src="gol.png" alt="Resultado" />
+      <video id="resultVideo" class="result-video" playsinline muted preload="auto"></video>
+      <img id="mask" class="mask" src="mascara.png" alt="" />
+      <div id="resultDecor" class="result-decor"></div>
+      <p id="resultText" class="result-text"></p>
+      <button id="continueBtn" class="action action--continue" type="button" aria-label="Continuar">
+        <img src="continuar-btn.png" alt="Continuar" />
+        <img class="continue-arrow" src="continuar-flecha.png" alt="" />
+      </button>
+    </section>
+
+    <section id="winScene" class="scene scene--win" hidden>
+      <div class="win-card">
+        <img src="gol-pegatina.png" alt="" />
+        <h1>¡Victoria!</h1>
+        <p>Metiste 10 penales. Campeón desde los once pasos.</p>
+        <button id="restartBtn" class="text-button" type="button">Jugar otra vez</button>
+      </div>
+    </section>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
