@@ -52,8 +52,8 @@ function animateMeters(now = performance.now()) {
 }
 
 function updateHud() {
-  goalsText.textContent = state.goals;
-  missesText.textContent = state.misses;
+  if (goalsText) goalsText.textContent = state.goals;
+  if (missesText) missesText.textContent = state.misses;
   hitsText.textContent = `${state.goals}/${WIN_GOALS}`;
 }
 
